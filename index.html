@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Maquette mobile OUIHELP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Une page, un monde clair : panneau de choix du format à gauche, téléphone interactif à droite. */
+:root {
+  color-scheme: light;
+  --ground: #EEEDE8;
+  --panel: #FFFFFF;
+  --ink: #16161D;
+  --muted: #55556A;
+  --line: #DADAE0;
+  --accent: #4338CA;
+  --accent-deep: #312E81;
+  --accent-soft: #EEF0FF;
+  --good: #15803D;
+  --good-soft: #ECFDF3;
+  --warn: #B45309;
+  --warn-soft: #FFF7ED;
+  --screen: #F6F5F1;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
+button { font-family: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.layout { min-height: 100%; display: grid; grid-template-columns: minmax(300px, 420px) 1fr; gap: 40px; padding: 32px 40px; max-width: 1280px; margin: 0 auto; align-items: start; }
+.side { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 24px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img { width: 44px; height: 44px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: 32px; line-height: 1.1; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 60ch; }
+.formats { display: flex; flex-direction: column; gap: 10px; }
+.fmt { text-align: left; background: var(--panel); border: 2px solid var(--line); border-radius: 16px; padding: 14px 16px; cursor: pointer; display: grid; grid-template-columns: 40px 1fr; gap: 4px 12px; align-items: start; color: var(--ink); }
+.fmt:hover { border-color: #A5A8E8; }
+.fmt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.fmt .letter { grid-row: span 3; width: 40px; height: 40px; border-radius: 12px; background: var(--ink); color: #FFFFFF; font-family: var(--font-display); font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+.fmt[aria-pressed="true"] .letter { background: var(--accent); }
+.fmt .name { font-weight: 800; font-size: 17px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.fmt .tag { font-size: 11px; font-weight: 700; color: #FFFFFF; background: var(--accent); border-radius: 999px; padding: 3px 8px; letter-spacing: 0.02em; }
+.fmt .desc { font-size: 14px; color: var(--muted); }
+.fmt .price { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tools { display: flex; gap: 10px; flex-wrap: wrap; }
+.ghost { height: 44px; padding: 0 16px; border-radius: 12px; border: 2px solid var(--ink); background: transparent; color: var(--ink); font-weight: 700; font-size: 14px; cursor: pointer; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.stage { display: flex; justify-content: center; align-items: flex-start; }
+.phone-wrap { position: relative; }
+.phone { width: 390px; height: 844px; border-radius: 44px; background: #0B0B10; padding: 12px; box-shadow: 0 24px 60px rgba(22, 22, 29, 0.25); transform-origin: top center; }
+.screen { width: 100%; height: 100%; border-radius: 34px; overflow: hidden; background: var(--screen); display: flex; flex-direction: column; }
+.top { display: flex; align-items: center; gap: 10px; padding: 18px 14px 8px 10px; }
+.iconbtn { width: 44px; height: 44px; border-radius: 22px; border: 0; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+.iconbtn:disabled { opacity: 0.4; cursor: default; }
+.ttl { flex: 1; min-width: 0; }
+.ttl .k { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--muted); }
+.ttl .t { font-size: 15px; font-weight: 800; line-height: 1.2; }
+.chip { font-size: 12px; font-weight: 800; color: var(--accent-deep); background: var(--accent-soft); border-radius: 999px; padding: 6px 10px; flex: none; }
+.prog { padding: 0 14px 4px; }
+.bar { height: 6px; border-radius: 3px; background: #E2E2E8; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+.progmeta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.content { flex: 1; overflow-y: auto; padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 12px; }
+.k2 { font-size: 12px; font-weight: 800; letter-spacing: 0.05em; color: var(--accent-deep); text-transform: uppercase; }
+.h { font-family: var(--font-display); font-weight: 800; font-size: 23px; line-height: 1.2; margin: 0; text-wrap: balance; }
+.q { font-weight: 800; font-size: 19px; line-height: 1.3; margin: 0; }
+.card { background: #FFFFFF; border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.txt { font-size: 15px; color: #3F3F4C; margin: 0; }
+.bubble { align-self: flex-start; background: var(--ink); color: #FFFFFF; border-radius: 16px 16px 16px 4px; padding: 10px 14px; font-size: 16px; font-weight: 600; }
+.reflex { display: flex; gap: 12px; align-items: flex-start; background: #FFFFFF; border-radius: 16px; padding: 12px; }
+.reflex .ic { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; flex: none; }
+.reflex b { display: block; font-size: 16px; }
+.reflex span { font-size: 15px; color: #3F3F4C; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { text-align: left; display: flex; gap: 10px; padding: 13px 14px; border-radius: 14px; border: 2px solid #CFCFD8; background: #FFFFFF; font-size: 15px; line-height: 1.4; color: var(--ink); cursor: pointer; }
+.opt .l { font-weight: 800; color: var(--accent-deep); }
+.opt.ok { border-color: var(--good); background: var(--good-soft); }
+.opt.ko { border-color: var(--warn); background: var(--warn-soft); }
+.opt.dim { border-color: #E4E4EA; background: #FAFAFB; color: #55556A; }
+.fb { border-radius: 14px; padding: 12px 14px; border: 1px solid; }
+.fb.ok { background: var(--good-soft); border-color: var(--good); }
+.fb.ko { background: var(--warn-soft); border-color: var(--warn); }
+.fb b { display: block; font-size: 15px; margin-bottom: 2px; }
+.fb p { margin: 0; font-size: 14px; }
+.capsule { height: 200px; border-radius: 14px; background: var(--accent-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; text-align: center; }
+.clock { font-family: var(--font-display); font-weight: 800; font-size: 46px; color: var(--accent); line-height: 1; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.pills span { background: #FFFFFF; border-radius: 999px; padding: 6px 10px; font-size: 13px; font-weight: 700; }
+.rchip { background: #FFFFFF; border-radius: 12px; padding: 8px 12px; display: flex; gap: 10px; align-items: center; width: 260px; font-weight: 700; font-size: 15px; }
+.rchip svg { flex: none; }
+.player { display: flex; align-items: center; gap: 12px; }
+.play { width: 48px; height: 48px; border-radius: 24px; border: 0; background: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+.pmeta { flex: 1; }
+.cap { min-height: 44px; border-radius: 10px; background: var(--ink); color: #FFFFFF; font-size: 15px; padding: 10px 12px; }
+.video { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #1F2937; }
+.video svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.video .bigplay { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 32px; border: 0; background: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.video .pause { position: absolute; right: 10px; top: 10px; width: 44px; height: 44px; border-radius: 22px; border: 0; background: var(--accent); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.video .vcap { position: absolute; left: 10px; right: 10px; bottom: 10px; border-radius: 8px; background: #000000; color: #FFFFFF; font-size: 14px; line-height: 1.35; padding: 8px 10px; }
+.vlabel { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+.thin { height: 4px; }
+.end { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-top: 6px; }
+.num { width: 30px; height: 30px; border-radius: 15px; background: var(--accent); color: #FFFFFF; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
+.row { display: flex; gap: 12px; align-items: center; font-size: 15px; }
+.outline { height: 48px; border-radius: 14px; border: 2px solid var(--accent); background: #FFFFFF; color: var(--accent-deep); font-size: 15px; font-weight: 700; cursor: pointer; }
+.bottom { padding: 10px 14px 16px; background: #FFFFFF; border-top: 1px solid #E4E4EA; display: flex; flex-direction: column; gap: 4px; }
+.primary { height: 52px; border-radius: 14px; border: 0; background: var(--accent); color: #FFFFFF; font-size: 16px; font-weight: 800; cursor: pointer; }
+.primary:disabled { background: #A1A1B0; cursor: not-allowed; }
+.link { height: 40px; border: 0; background: transparent; color: var(--accent-deep); font-size: 14px; font-weight: 700; cursor: pointer; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding: 20px 16px; gap: 20px; }
+  .side { position: static; }
+  .formats { flex-direction: row; overflow-x: auto; gap: 8px; }
+  .fmt { min-width: 220px; grid-template-columns: 34px 1fr; }
+  .fmt .letter { width: 34px; height: 34px; font-size: 17px; }
+  .fmt .desc { display: none; }
+}
+@media (max-width: 480px) {
+  .phone { width: 100%; height: 760px; border-radius: 28px; padding: 6px; }
+  .screen { border-radius: 24px; }
+  .phone-wrap { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side" aria-label="Choix du format">
+    <div class="brand"><img alt="NLF" src="data:image/png;base64,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"><div class="eyebrow">NLF pour OUIHELP · maquette V1</div></div>
+    <h1>Le lever : respecter le rythme et les choix</h1>
+    <p class="lead">UP pilote BT-09 de la formation Iperia « Développer des pratiques bientraitantes auprès d'une personne en situation de dépendance » (14 h). Même mise en situation, trois façons de la vivre sur téléphone. Choisissez un format, puis parcourez l'écran.</p>
+    <div class="formats" role="group" aria-label="Format de l'unité pédagogique">
+      <button class="fmt" type="button" data-fmt="A" aria-pressed="false"><span class="letter">A</span><span class="name">Essentiel mobile</span><span class="desc">Écrans courts illustrés et questions. Tout se suit sans le son.</span></button>
+      <button class="fmt" type="button" data-fmt="B" aria-pressed="true"><span class="letter">B</span><span class="name">Animé voix off <span class="tag">Recommandé</span></span><span class="desc">Capsules animées de 60 à 90 s, voix off sous-titrée, puis une interaction.</span></button>
+      <button class="fmt" type="button" data-fmt="C" aria-pressed="false"><span class="letter">C</span><span class="name">Vidéo incarnée</span><span class="desc">Scènes jouées chez une bénéficiaire et experte face caméra, puis une décision.</span></button>
+    </div>
+    <div class="tools"><button class="ghost" type="button" data-action="restart">Recommencer la démo</button></div>
+    <p class="note">Le format change la manière de transmettre, pas le fond : les questions et les décisions sont identiques. Contenus indicatifs, à valider avec la directrice de l'autonomie ; illustrations et vidéos remplacées par des aperçus. Le chiffrage de chaque format figure dans le tableur de proposition.</p>
+  </aside>
+  <main class="stage">
+    <div class="phone-wrap" id="wrap">
+      <div class="phone" id="phone"><div class="screen" id="screen" aria-live="polite"></div></div>
+    </div>
+  </main>
+</div>
+<script>
+(function () {
+  var ARROW = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16161D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+  var PLAY = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  var PAUSE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+  var EAR = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8.5a6 6 0 1 1 12 0c0 3-2 4.2-3 5.4-.9 1-1 2.1-1 3.1a3 3 0 0 1-5.6 1.4"/><path d="M9 9a3 3 0 0 1 6 0"/></svg>';
+  var TALK = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>';
+  var CHOICE = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V11"/><path d="M12 11L6 5"/><path d="M12 11l6-6"/><path d="M3 5h6"/><path d="M15 5h6"/></svg>';
+  var BADGE = '<svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="#EEF0FF" stroke="#4338CA" stroke-width="3"/><path d="M24 37l8 8 16-17" fill="none" stroke="#4338CA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var SCENE_A = '<svg viewBox="0 0 310 150" width="100%" role="img" aria-label="Chambre de Mme Jeanne à 8 h 05, volets mi-clos"><rect width="310" height="150" rx="14" fill="#EEF0FF"/><rect x="196" y="20" width="84" height="64" rx="6" fill="#FFFFFF" stroke="#4338CA" stroke-width="2"/><line x1="196" y1="40" x2="280" y2="40" stroke="#4338CA" stroke-width="2"/><line x1="196" y1="52" x2="280" y2="52" stroke="#4338CA" stroke-width="2"/><rect x="24" y="84" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#16161D" stroke-width="2"/><rect x="24" y="72" width="44" height="24" rx="8" fill="#FFFFFF" stroke="#16161D" stroke-width="2"/><circle cx="52" cy="66" r="12" fill="#FDE7D3" stroke="#16161D" stroke-width="2"/><rect x="24" y="124" width="8" height="14" fill="#16161D"/><rect x="166" y="124" width="8" height="14" fill="#16161D"/><circle cx="238" cy="118" r="18" fill="#FFFFFF" stroke="#16161D" stroke-width="2"/><line x1="238" y1="118" x2="238" y2="106" stroke="#16161D" stroke-width="2.5" stroke-linecap="round"/><line x1="238" y1="118" x2="241" y2="121" stroke="#16161D" stroke-width="2.5" stroke-linecap="round"/></svg>';
+  var SCENE_ROOM = '<svg class="scene" viewBox="0 0 350 197" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="350" height="197" fill="#1F2937"/><rect x="232" y="22" width="90" height="70" rx="4" fill="#374151"/><line x1="232" y1="44" x2="322" y2="44" stroke="#4B5563" stroke-width="3"/><line x1="232" y1="60" x2="322" y2="60" stroke="#4B5563" stroke-width="3"/><rect x="30" y="112" width="170" height="44" rx="8" fill="#4B5563"/><rect x="30" y="98" width="48" height="26" rx="8" fill="#6B7280"/><circle cx="62" cy="92" r="13" fill="#9CA3AF"/><circle cx="258" cy="112" r="15" fill="#9CA3AF"/><rect x="238" y="128" width="40" height="52" rx="12" fill="#6B7280"/></svg>';
+  var SCENE_FACE = '<svg class="scene" viewBox="0 0 350 197" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="350" height="197" fill="#1F2937"/><rect x="24" y="24" width="96" height="120" rx="6" fill="#374151"/><circle cx="200" cy="82" r="30" fill="#9CA3AF"/><path d="M140 197c4-44 30-66 60-66s56 22 60 66z" fill="#6B7280"/></svg>';
+  var SCENE_PHONE = '<svg class="scene" viewBox="0 0 350 197" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="350" height="197" fill="#1F2937"/><circle cx="150" cy="80" r="26" fill="#9CA3AF"/><path d="M98 197c4-40 26-60 52-60s48 20 52 60z" fill="#6B7280"/><rect x="172" y="66" width="18" height="30" rx="4" fill="#E5E7EB"/><path d="M214 52c10 8 10 24 0 32M226 42c18 14 18 38 0 52" fill="none" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/></svg>';
+
+  var MEDIA = {
+    B: {
+      0: { dur: 16, kind: 'Capsule animée · voix off', rv: [4, 9, 99], caps: [[0, '8 h 05. Vous arrivez chez Mme Jeanne, 86 ans.'], [4, 'Elle vous dit : « Pas maintenant, je suis fatiguée. »'], [9, 'Il vous reste 45 minutes : lever, toilette, petit-déjeuner.'], [13, 'Comment réagir sans la brusquer ?']] },
+      1: { dur: 20, kind: 'Capsule animée · voix off', rv: [4, 9, 14], caps: [[0, 'Face à un refus, trois réflexes.'], [4, 'Un : écouter et reformuler. « Vous êtes fatiguée ce matin. »'], [9, 'Deux : expliquer simplement pourquoi vous êtes là.'], [14, 'Trois : offrir un choix. « Maintenant, ou dans 10 minutes ? »']] }
+    },
+    C: {
+      0: { dur: 16, kind: 'Vidéo', label: 'Scène jouée · aperçu, vidéo à tourner', caps: [[0, '[Chambre de Mme Jeanne, volets mi-clos]'], [3, 'NADIA — Bonjour Madame Jeanne, c\'est Nadia.'], [7, 'MME JEANNE — Pas maintenant, je suis fatiguée…'], [11, 'NADIA, pour elle-même — Il me reste 45 minutes…']] },
+      1: { dur: 20, kind: 'Vidéo', label: 'Face caméra · script à écrire avec la directrice de l\'autonomie', caps: [[0, '« Un refus n\'est pas un échec : c\'est une information. »'], [5, '« J\'écoute et je reformule : vous êtes fatiguée ce matin. »'], [10, '« J\'explique simplement pourquoi je suis là. »'], [15, '« Et je propose un choix : maintenant, ou dans dix minutes ? »']] },
+      3: { dur: 12, kind: 'Vidéo', label: 'Scène jouée · aperçu, vidéo à tourner', caps: [[0, '[Le téléphone sonne. Nadia décroche.]'], [4, 'LA FILLE — Maman doit être levée avant 9 h, je vous l\'ai déjà dit !'], [9, 'À vous de décider.']] }
+    }
+  };
+  var Q1 = [
+    { l: '« Allez, on se lève, on n\'a pas le temps. »', fb: 'Vous imposez votre rythme : Mme Jeanne risque de se braquer, et le lever sera plus difficile.' },
+    { l: '« Vous préférez que je revienne dans 10 minutes, ou on commence par le petit-déjeuner ? »', fb: 'Vous respectez sa fatigue et vous lui proposez deux options : elle garde la main.' },
+    { l: '« D\'accord, je note que vous refusez. »', fb: 'Vous respectez son refus, mais sans rien lui proposer. Cherchez d\'abord une alternative.' }
+  ];
+  var Q2 = [
+    { l: 'Je lève Mme Jeanne tout de suite, pour respecter la demande.', fb: 'C\'est Mme Jeanne qui décide pour elle-même. La forcer serait une forme de maltraitance, même avec de bonnes intentions.' },
+    { l: 'J\'écoute sa fille, j\'explique la fatigue de sa mère et je préviens ma responsable de secteur.', fb: 'Vous respectez Mme Jeanne, vous entendez sa fille et vous transmettez pour que l\'accompagnement soit ajusté avec tout le monde.' },
+    { l: 'Je lui réponds que ce n\'est pas à elle de décider.', fb: 'La famille compte. Expliquez sans la mettre de côté, puis transmettez l\'information.' }
+  ];
+  var NAMES = { A: 'Essentiel mobile', B: 'Animé voix off', C: 'Vidéo incarnée' };
+  var LABELS = ['Écran 1 sur 5 · la situation', 'Écran 2 sur 5 · la notion', 'Écran 3 sur 5 · question flash', 'Écran 4 sur 5 · mise en situation', 'Écran 5 sur 5 · bilan'];
+  var NEXTS = ['Commencer', 'Je m\'entraîne', 'Continuer', 'Voir le bilan', 'Recommencer la démo'];
+
+  var s = { fmt: 'B', step: 0, t: 0, playing: false, played: false, q1: null, q2: null };
+  var hashFmt = { 'format-a': 'A', 'format-b': 'B', 'format-c': 'C' };
+
+  function media() { var m = MEDIA[s.fmt]; return m ? (m[s.step] || null) : null; }
+  function mmss(x) { return '0:' + (x < 10 ? '0' : '') + x; }
+  function caption(d) {
+    if (!s.playing && !s.played && s.t === 0) { return 'Appuyez sur lecture. Sous-titres activés.'; }
+    var c = d.caps[0][1];
+    d.caps.forEach(function (k) { if (k[0] <= s.t) { c = k[1]; } });
+    return c;
+  }
+  function shown(d, i) { return s.played || s.t >= d.rv[i]; }
+  function pct(d) { return Math.round(s.t / d.dur * 100) + '%'; }
+
+  function capsule(inner, d) {
+    return '<div class="card"><div class="capsule">' + inner + '</div>' +
+      '<div class="player"><button class="play" type="button" data-action="toggle" aria-label="' + (s.playing ? 'Mettre en pause' : 'Lancer la capsule') + '">' + (s.playing ? PAUSE : PLAY) + '</button>' +
+      '<div class="pmeta"><div class="bar"><i style="width:' + pct(d) + '"></i></div><div class="progmeta"><span>' + d.kind + '</span><span>' + mmss(s.t) + ' / ' + mmss(d.dur) + '</span></div></div></div>' +
+      '<div class="cap">' + caption(d) + '</div></div>';
+  }
+  function video(scene, d) {
+    var ctrl = s.playing ? '<button class="pause" type="button" data-action="toggle" aria-label="Mettre en pause">' + PAUSE + '</button>' : '<button class="bigplay" type="button" data-action="toggle" aria-label="Lancer la vidéo">' + PLAY + '</button>';
+    return '<div class="card"><div class="video">' + scene + ctrl + '<div class="vcap">' + caption(d) + '</div></div>' +
+      '<div class="bar thin"><i style="width:' + pct(d) + '"></i></div><div class="vlabel"><span>' + d.label + '</span><span>' + mmss(s.t) + ' / ' + mmss(d.dur) + '</span></div></div>';
+  }
+  function reflex(icon, t, q) { return '<div class="reflex"><div class="ic">' + icon + '</div><div><b>' + t + '</b><span>' + q + '</span></div></div>'; }
+  function options(list, key) {
+    var picked = s[key], answered = picked !== null;
+    var html = '<div class="opts">';
+    list.forEach(function (o, i) {
+      var cls = 'opt';
+      if (answered) { cls += (i === 1) ? ' ok' : (i === picked ? ' ko' : ' dim'); }
+      html += '<button class="' + cls + '" type="button" data-action="pick" data-key="' + key + '" data-i="' + i + '" aria-pressed="' + (i === picked) + '"><span class="l">' + 'ABC'.charAt(i) + '</span><span>' + o.l + '</span></button>';
+    });
+    html += '</div>';
+    if (answered) {
+      var ok = picked === 1;
+      html += '<div class="fb ' + (ok ? 'ok' : 'ko') + '"><b>' + (ok ? 'Bonne réponse' : 'Pas tout à fait') + '</b><p>' + list[picked].fb + '</p></div>';
+    }
+    return html;
+  }
+
+  function screen0() {
+    var h = '<div class="k2">La situation du jour</div><h2 class="h">Chez Mme Jeanne, 8 h 05</h2>';
+    var ctx = '<p class="txt">Mme Jeanne, 86 ans, vit seule. Il vous reste 45 minutes : lever, toilette, petit-déjeuner.</p>';
+    if (s.fmt === 'A') {
+      return h + '<div class="card">' + SCENE_A + '<div class="bubble">« Pas maintenant, je suis fatiguée. »</div></div>' + ctx + '<p class="txt"><b>Dans cette séquence :</b> proposer plutôt qu\'imposer.</p>';
+    }
+    var d = media();
+    if (s.fmt === 'B') {
+      var inner = '<div class="clock">8:05</div>' + (shown(d, 0) ? '<div class="bubble">« Pas maintenant, je suis fatiguée. »</div>' : '') + (shown(d, 1) ? '<div class="pills"><span>Lever</span><span>Toilette</span><span>Petit-déjeuner</span></div>' : '');
+      return h + capsule(inner, d) + '<p class="txt">Capsule animée, voix off sous-titrée : elle se suit aussi sans le son.</p>';
+    }
+    return h + video(SCENE_ROOM, d) + ctx;
+  }
+  function screen1() {
+    var h = '<div class="k2">' + (s.fmt === 'C' ? 'La parole de l\'experte' : 'Notion clé') + '</div><h2 class="h">Proposer plutôt qu\'imposer</h2>';
+    if (s.fmt === 'A') {
+      return h + reflex(EAR, '1. Écouter et reformuler', '« Vous êtes fatiguée ce matin. »') + reflex(TALK, '2. Expliquer simplement', '« Je viens vous aider à vous lever pour le petit-déjeuner. »') + reflex(CHOICE, '3. Offrir un choix', '« Je reviens dans 10 minutes, ou on commence par le petit-déjeuner ? »') + '<p class="txt">Un refus n\'est pas un échec : c\'est une information sur la personne.</p>';
+    }
+    var d = media();
+    if (s.fmt === 'B') {
+      var inner = '<div style="font-weight:800;font-size:18px">Face à un refus</div>' + (shown(d, 0) ? '<div class="rchip">' + EAR + 'Écouter et reformuler</div>' : '') + (shown(d, 1) ? '<div class="rchip">' + TALK + 'Expliquer simplement</div>' : '') + (shown(d, 2) ? '<div class="rchip">' + CHOICE + 'Offrir un choix</div>' : '');
+      return h + capsule(inner, d);
+    }
+    return h + video(SCENE_FACE, d) + '<div class="card"><p class="txt">Écouter et reformuler · expliquer simplement · offrir un choix.</p></div>';
+  }
+  function screen2() {
+    return '<div class="k2">Question flash</div><p class="q">Mme Jeanne vient de refuser de se lever. Quelle phrase choisissez-vous ?</p>' + options(Q1, 'q1');
+  }
+  function screen3() {
+    var m = '';
+    if (s.fmt === 'A') { m = '<div class="reflex"><div class="ic">' + TALK + '</div><div><b>Appel entrant</b><span>La fille de Mme Jeanne</span></div></div>'; }
+    else if (s.fmt === 'B') { m = '<div class="reflex" style="background:#EEF0FF"><div class="ic" style="background:#FFFFFF">' + TALK + '</div><div><b>Capsule de 15 s</b><span>Aperçu : l\'appel de la fille, animé</span></div></div>'; }
+    else { m = video(SCENE_PHONE, media()); }
+    return '<div class="k2">Mise en situation</div>' + m + '<p class="q">9 h 10. Sa fille appelle : « Maman doit être levée avant 9 h, je vous l\'ai déjà dit. » Que faites-vous ?</p>' + options(Q2, 'q2');
+  }
+  function screen4() {
+    return '<div class="end">' + BADGE + '<h2 class="h">Badge « Rythme respecté »</h2><p class="txt">Mise en situation terminée. Votre formation avance : 32 %.</p></div>' +
+      '<div class="card"><div class="k2" style="color:#55556A">3 réflexes à retenir</div>' +
+      '<div class="row"><span class="num">1</span>J\'écoute et je reformule.</div><div class="row"><span class="num">2</span>Je propose deux options.</div><div class="row"><span class="num">3</span>Je transmets un refus qui se répète.</div></div>' +
+      '<div class="card" style="background:#EEF0FF"><p class="txt"><b>Fiche mémo</b> : un PDF de 2 pages à télécharger dans la version finale.</p></div>';
+  }
+
+  function render() {
+    var blocked = (s.step === 2 && s.q1 === null) || (s.step === 3 && s.q2 === null);
+    var body = [screen0, screen1, screen2, screen3, screen4][s.step]();
+    var el = document.getElementById('screen');
+    var keepScroll = el.querySelector('.content') ? el.querySelector('.content').scrollTop : 0;
+    el.innerHTML =
+      '<div class="top"><button class="iconbtn" type="button" data-action="back" aria-label="Écran précédent"' + (s.step === 0 ? ' disabled' : '') + '>' + ARROW + '</button>' +
+      '<div class="ttl"><div class="k">BIENTRAITANCE · UP 9 SUR 28</div><div class="t">Le lever : respecter le rythme</div></div><span class="chip">Format ' + s.fmt + '</span></div>' +
+      '<div class="prog"><div class="bar"><i style="width:' + ((s.step + 1) * 20) + '%"></i></div><div class="progmeta"><span>' + LABELS[s.step] + '</span><span>' + NAMES[s.fmt] + '</span></div></div>' +
+      '<div class="content">' + body + '</div>' +
+      '<div class="bottom"><button class="primary" type="button" data-action="next"' + (blocked ? ' disabled' : '') + '>' + NEXTS[s.step] + '</button>' +
+      '<button class="link" type="button" data-action="later">' + (s.step === 4 ? 'Revenir au parcours' : 'Reprendre plus tard') + '</button></div>';
+    if (keepScroll && el.querySelector('.content')) { el.querySelector('.content').scrollTop = keepScroll; }
+    var btns = document.querySelectorAll('.fmt');
+    for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-pressed', String(btns[i].getAttribute('data-fmt') === s.fmt)); }
+  }
+  function resetMedia() { s.t = 0; s.playing = false; s.played = false; }
+  function go(step) { s.step = step; resetMedia(); render(); var c = document.querySelector('.content'); if (c) { c.scrollTop = 0; } }
+  function setFmt(f, fromHash) {
+    s.fmt = f; resetMedia(); render();
+    if (!fromHash) { try { history.replaceState(null, '', '#format-' + f.toLowerCase()); } catch (e) { try { location.hash = 'format-' + f.toLowerCase(); } catch (e2) {} } }
+  }
+
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b) { return; }
+    var f = b.getAttribute('data-fmt');
+    if (f) { setFmt(f, false); return; }
+    var a = b.getAttribute('data-action');
+    if (a === 'next') {
+      if (s.step === 4) { s.q1 = null; s.q2 = null; go(0); } else { go(s.step + 1); }
+    } else if (a === 'back') { if (s.step > 0) { go(s.step - 1); } }
+    else if (a === 'later') { b.textContent = 'Progression enregistrée (démo)'; setTimeout(render, 1600); }
+    else if (a === 'restart') { s.q1 = null; s.q2 = null; go(0); }
+    else if (a === 'pick') { s[b.getAttribute('data-key')] = Number(b.getAttribute('data-i')); render(); }
+    else if (a === 'toggle') {
+      var d = media(); if (!d) { return; }
+      if (!s.playing && s.t >= d.dur) { s.t = 0; s.played = false; s.playing = true; } else { s.playing = !s.playing; }
+      render();
+    }
+  });
+  setInterval(function () {
+    if (!s.playing) { return; }
+    var d = media(); if (!d) { s.playing = false; return; }
+    s.t += 1;
+    if (s.t >= d.dur) { s.t = d.dur; s.playing = false; s.played = true; }
+    render();
+  }, 1000);
+
+  function fit() {
+    var phone = document.getElementById('phone'), wrap = document.getElementById('wrap');
+    if (window.innerWidth <= 480) { phone.style.transform = ''; wrap.style.height = ''; wrap.style.width = ''; return; }
+    var avail = window.innerHeight - (window.innerWidth <= 900 ? 24 : 64);
+    var k = Math.max(0.6, Math.min(1, avail / 844));
+    phone.style.transform = 'scale(' + k + ')';
+    wrap.style.width = (390 * k) + 'px';
+    wrap.style.height = (844 * k) + 'px';
+    phone.style.transformOrigin = 'top left';
+  }
+  function fromHash() { var h = (location.hash || '').replace('#', ''); if (hashFmt[h]) { setFmt(hashFmt[h], true); } else { render(); } }
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', fromHash);
+  fit();
+  fromHash();
+})();
+</script>
+</body>
+</html>
